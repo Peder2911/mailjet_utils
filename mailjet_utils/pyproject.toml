@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mailjet_utils"
-version = "0.1.0"
+version = "0.2.0"
 description = "A package with models for working with mailjet."
 authors = ["peder2911 <pglandsverk@gmail.com>"]
 readme = "README.md"
