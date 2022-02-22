@@ -2,8 +2,8 @@
 on:
   push:
 jobs:
-  run_unittests:
-    name: "Test and deploy to PyPi"
+  test_build_and_publish:
+    name: "Test, build and publish"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -28,25 +28,11 @@ jobs:
           twine upload dist/* --skip-existing --username __token__ --password ${{ secrets.PYPI_API_TOKEN}}
         working-directory: ./mailjet_utils
 
-  deploy_docker_image:
-    name: "Deploy Docker Image"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Docker login 
+      - name: "Docker login"
         uses: docker/login-action@v1 
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - uses: actions/setup-python@v2
-        with:
-          python-version: "3.8"
-
-      - name: "Dependencies"
-        run: |
-          pip install poetry 
 
       - name: "Get version"
         id: get_version
@@ -61,4 +47,3 @@ jobs:
           tags: |
             peder2911/mailjet-utils:${{ steps.get_version.outputs.VERSION }}
             peder2911/mailjet-utils:latest
-
