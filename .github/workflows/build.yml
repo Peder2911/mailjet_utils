@@ -25,7 +25,8 @@ jobs:
       - name: "Build"
         run: |
           poetry build
-          twine upload mailjet_utils/dist/* --username __token__ --password ${{ secrets.PYPI_API_TOKEN}}
+          twine upload dist/* --username __token__ --password ${{ secrets.PYPI_API_TOKEN}}
+        working-directory: ./mailjet_utils
 
   deploy_docker_image:
     name: "Deploy Docker Image"
@@ -49,7 +50,7 @@ jobs:
 
       - name: "Get version"
         id: get_version
-        run: echo ::set-output name=VERSION::$(poetry version)
+        run: echo ::set-output name=VERSION::$(poetry version -s)
         working-directory: ./mailjet_utils
 
       - name: Build and push
