@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "mailjet_utils"
+version = "0.1.0"
+description = "A package with models for working with mailjet."
+authors = ["peder2911 <pglandsverk@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = {extras = ["email"], version = "^1.9.0"}
+fastapi = "^0.74.1"
+gunicorn = "^20.1.0"
+uvicorn = "^0.17.5"
+httptools = "^0.3.0"
+uvloop = "^0.16.0"
+
+[tool.poetry.dev-dependencies]
+jedi = "^0.18.1"
+pylint = "^2.12.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
