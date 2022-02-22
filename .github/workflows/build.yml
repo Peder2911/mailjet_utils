@@ -1,0 +1,66 @@
+
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  run_unittests:
+    name: "Test and deploy to PyPi"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: "Dependencies"
+        run: |
+          pip install poetry 
+          pip install .
+        working-directory: ./mailjet_utils
+
+      - name: "Run tests"
+        run: $(poetry env info -p)/bin/python -m unittest
+        working-directory: ./mailjet_utils
+
+      - name: "Build"
+        run: |
+          poetry build
+          twine upload dist/* --username __token__ --password ${{ secrets.PYPI_API_TOKEN}}
+
+  deploy_docker_image:
+    name: "Deploy Docker Image"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker login 
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: "Dependencies"
+        run: |
+          pip install poetry 
+
+      - name: "Get version"
+        id: get_version
+        run: ::set-output name=VERSION::poetry version
+        working-directory: ./mailjet_utils
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        if: ${{ !env.ACT }}
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.make_name.outputs.NAME }}:${{ steps.get_version.outputs.VERSION }}
+            ${{ steps.make_name.outputs.NAME }}:latest
+

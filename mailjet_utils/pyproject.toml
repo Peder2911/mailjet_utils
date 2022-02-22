@@ -3,6 +3,8 @@ name = "mailjet_utils"
 version = "0.1.0"
 description = "A package with models for working with mailjet."
 authors = ["peder2911 <pglandsverk@gmail.com>"]
+readme = "README.md"
+homepage = "https://www.github.com/peder2911/mailjet_utils"
 
 [tool.poetry.dependencies]
 python = "^3.8"
