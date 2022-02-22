@@ -54,11 +54,10 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ !env.ACT }}
         with:
           context: .
           push: true
           tags: |
-            ${{ steps.make_name.outputs.NAME }}:${{ steps.get_version.outputs.VERSION }}
-            ${{ steps.make_name.outputs.NAME }}:latest
+            peder2911/mailjet-utils:${{ steps.get_version.outputs.VERSION }}
+            peder2911/mailjet-utils:latest
 
