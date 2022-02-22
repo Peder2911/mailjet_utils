@@ -1,8 +1,6 @@
 
 on:
   push:
-    tags:
-      - '*'
 jobs:
   run_unittests:
     name: "Test and deploy to PyPi"
