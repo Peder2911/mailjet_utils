@@ -49,7 +49,7 @@ jobs:
 
       - name: "Get version"
         id: get_version
-        run: ::set-output name=VERSION::poetry version
+        run: echo ::set-output name=VERSION::$(poetry version)
         working-directory: ./mailjet_utils
 
       - name: Build and push
